@@ -61,7 +61,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
       <label>Files</label>
 	  <div class="w3-section w3-border">
 		<div class="w3-container selFile">
-		  <span class="selFileName heading">Filename</span><span class="selFileName heading">Shared name</span><span class="w3-button selFileButton invisible">Rename</span><span class="w3-button selFileButton invisible">Remove</span>
+		  <span class="selFileName heading">Filename</span><span class="selFileName heading">Shared name</span><span class="w3-button selFileButton invisible w3-light-grey" id="renameWidth">Rename</span><span class="w3-button selFileButton invisible">Remove</span>
 		</div>
 	    <div id="fileList">
 		</div>
@@ -141,6 +141,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 <script>
 selectedFileSet = {};
 lastSelLoc = undefined;
+
 var openInbox = document.getElementById("myBtn");
 openInbox.click();
 
@@ -193,16 +194,30 @@ function addFileInput(files) {
 		var file = document.createElement("div");
 		var inName = document.createElement("span");
 		var outName = document.createElement("span");
+		var editName = document.createElement("input");
 		var rename = document.createElement("a");
 		var remove = document.createElement("a");
 		
+		editName.type = "text";
+		editName.style.display = "none";
 		inName.appendChild(document.createTextNode(key));
 		outName.appendChild(document.createTextNode(selectedFileSet[key].name));
+		outName.appendChild(editName);
 		rename.appendChild(document.createTextNode("Rename"));
 		remove.appendChild(document.createTextNode("Remove"));
 		
 		rename.addEventListener("click", function() {
-			console.log("Rename " + key);
+			if (rename.innerText == "Rename") {
+				editName.value = outName.innerText;
+				rename.innerText = "Accept";
+				editName.style.display = "inline";
+			} else {
+				rename.innerText = "Rename";
+				selectedFileSet[key].name = editName.value;
+				outName.innerText = editName.value;
+				editName.style.display = "none";
+				outName.appendChild(editName); //Apparently the last line got rid of the element so need to add it back somehow
+			}
 		});
 		
 		remove.addEventListener("click", function() {
@@ -211,8 +226,9 @@ function addFileInput(files) {
 		});
 		
 		inName.className="selFileName";
-		outName.className="selFileName";
-		rename.className="w3-button selFileButton";
+		outName.className="selFileName w3-light-grey";
+		editName.className="w3-input w3-border w3-margin-bottom";
+		rename.className="w3-button selFileButton w3-light-grey";
 		remove.className="w3-button selFileButton";
 		file.appendChild(inName);
 		file.appendChild(outName);
@@ -220,6 +236,7 @@ function addFileInput(files) {
 		file.appendChild(remove);
 		file.className="w3-container selFile";
 		x.appendChild(file);
+		rename.style["flex"]="0 0 "+document.getElementById("renameWidth").clientWidth+"px";
 	}
 	
 	x.value = null;
