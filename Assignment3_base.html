@@ -53,7 +53,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 <div id="id01" class="w3-modal" style="z-index:4">
   <div class="w3-modal-content w3-animate-zoom">
     <div class="w3-container w3-padding w3-red">
-       <span onclick="document.getElementById('id01').style.display='none'"
+       <span onclick="cancelSharing()"
        class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
       <h2>Share File</h2>
     </div>
@@ -65,7 +65,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 		</div>
 	    <div id="fileList">
 		</div>
-        <input class="w3-input" type="file" multiple onchange="addFileInput(this.files)" onclick="this.value=null">
+        <input class="w3-input" type="file" multiple onchange="addFileInput(this.files)" onclick="this.value=null" id="filePicker">
 	  </div>
       <label>Share with</label>
       <select class="w3-select w3-border w3-margin-bottom" onchange="selectSharing(this)">
@@ -76,13 +76,17 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 	  </select>
       <input class="w3-input w3-border w3-margin-bottom" type="text" id="otherSharing" style="display:none;">
 	  <label>Location</label>
-      <input class="w3-input w3-border w3-margin-bottom" type="text">
-	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="Recent Locations">
+      <input class="w3-input w3-border w3-margin-bottom" type="text" id="fileLoc" onchange="selectLoc(undefined)">
+	  <input class="w3-input w3-border w3-margin-bottom" type="button" id="recentLocToggle" value="Show Recent Locations" onclick="toggleLocs()">
+      <div id="recentLoc" class="w3-container" style="display:none;">
+	    <input class="w3-input w3-border w3-margin-bottom" type="button" value="350 stuff/assign3" onclick="selectLoc(this)">
+	    <input class="w3-input w3-border w3-margin-bottom" type="button" value="303 stuff/tgip" onclick="selectLoc(this)">
+	  </div>
 	  <label>Custom message</label>
-      <input class="w3-input w3-border w3-margin-bottom" style="height:150px" placeholder="Message">
+      <input class="w3-input w3-border w3-margin-bottom" style="height:150px" id="shareMessage" placeholder="Message">
       <div class="w3-section">
-        <a class="w3-button w3-red" onclick="document.getElementById('id01').style.display='none'">Cancel  <i class="fa fa-remove"></i></a>
-        <a class="w3-button w3-light-grey w3-right" onclick="document.getElementById('id01').style.display='none'">Share  <i class="fa fa-paper-plane"></i></a>
+        <a class="w3-button w3-red" onclick="cancelSharing()">Cancel  <i class="fa fa-remove"></i></a>
+        <a class="w3-button w3-light-grey w3-right" onclick="cancelSharing()">Share  <i class="fa fa-paper-plane"></i></a>
       </div>
     </div>
   </div>
@@ -136,6 +140,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 
 <script>
 selectedFileSet = {};
+lastSelLoc = undefined;
 var openInbox = document.getElementById("myBtn");
 openInbox.click();
 
@@ -226,6 +231,44 @@ function selectSharing(list) {
 	} else {
 		document.getElementById("otherSharing").style.display = "none";
 	}
+}
+
+function selectLoc(loc) {
+  if (lastSelLoc !== undefined) {
+    lastSelLoc.className = lastSelLoc.className.replace(" w3-red","");
+  }
+  
+  if (loc !== undefined) {
+    loc.className += " w3-red";
+    document.getElementById("fileLoc").value = loc.value;
+  }
+  
+  lastSelLoc = loc;
+}
+
+function toggleLocs() {
+  if (document.getElementById("recentLoc").style.display == "block") {
+    document.getElementById("recentLoc").style.display = "none";
+	document.getElementById("recentLocToggle").value = "Show Recent Locations";
+  } else {
+    document.getElementById("recentLoc").style.display = "block";
+    document.getElementById("recentLocToggle").value = "Hide Recent Locations";
+  }
+}
+
+function cancelSharing() {
+  selectedFileSet = {};
+  addFileInput([]);
+  selectLoc(undefined);
+  document.getElementById("fileLoc").value = "";
+  document.getElementById("shareMessage").value = "";
+  document.getElementById("filePicker").value = null;
+  document.getElementById('id01').style.display='none';
+  
+  if (document.getElementById("recentLoc").style.display == "block") {
+    document.getElementById("recentLoc").style.display = "none";
+	document.getElementById("recentLocToggle").value = "Show Recent Locations";
+  }
 }
 </script>
 
