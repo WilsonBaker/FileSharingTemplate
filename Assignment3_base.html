@@ -8,6 +8,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><style>
 html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 .w3-bar-block .w3-bar-item {padding: 16px}
+.selFile {display:flex}
+.selFileName {flex-grow:1;flex-basis:0%}
+.selFileButton {flex-shrink:0}
+.heading {font-weight:bolder}
+.invisible {visibility:hidden}
 </style>
 <body>
 
@@ -55,6 +60,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
     <div class="w3-panel">
       <label>Files</label>
 	  <div class="w3-section w3-border">
+		<div class="w3-container selFile">
+		  <span class="selFileName heading">Filename</span><span class="selFileName heading">Shared name</span><span class="w3-button selFileButton invisible">Rename</span><span class="w3-button selFileButton invisible">Remove</span>
+		</div>
 	    <div id="fileList">
 		</div>
         <input class="w3-input" type="file" multiple onchange="addFileInput(this.files)">
@@ -170,13 +178,29 @@ function addFileInput(files) {
 	x.innerHTML = "";
 	
 	for (var i = 0; i < files.length; i++) {
-		selectedFileSet[files[i].name] = files[i];
+		selectedFileSet[files[i].name] = {file:files[i],name:files[i].name};
 	}
 	
 	for (key in selectedFileSet) {
 		var file = document.createElement("div");
-		file.appendChild(document.createTextNode(key));
-		file.className="w3-container";
+		var inName = document.createElement("span");
+		var outName = document.createElement("span");
+		var rename = document.createElement("a");
+		var remove = document.createElement("a");
+		
+		inName.appendChild(document.createTextNode(key));
+		outName.appendChild(document.createTextNode(selectedFileSet[key].name));
+		rename.appendChild(document.createTextNode("Rename"));
+		remove.appendChild(document.createTextNode("Remove"));
+		inName.className="selFileName";
+		outName.className="selFileName";
+		rename.className="w3-button selFileButton";
+		remove.className="w3-button selFileButton";
+		file.appendChild(inName);
+		file.appendChild(outName);
+		file.appendChild(rename);
+		file.appendChild(remove);
+		file.className="w3-container selFile";
 		x.appendChild(file);
 	}
 }
