@@ -53,11 +53,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
       <h2>Share File</h2>
     </div>
     <div class="w3-panel">
-      <label>To</label>
-      <input class="w3-input w3-border w3-margin-bottom" type="text">
-      <label>From</label>
-      <input class="w3-input w3-border w3-margin-bottom" type="text">
-      <label>File</label>
+      <label>Files</label>
+	  <div class="w3-section w3-border">
+	    <div id="fileList">
+		</div>
+        <input class="w3-input" type="file" multiple onchange="addFileInput(this.files)">
+	  </div>
+      <label>Share with</label>
       <input class="w3-input w3-border w3-margin-bottom" type="text">
       <input class="w3-input w3-border w3-margin-bottom" style="height:150px" placeholder="Message">
       <div class="w3-section">
@@ -115,6 +117,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 </div>
 
 <script>
+selectedFileSet = {};
 var openInbox = document.getElementById("myBtn");
 openInbox.click();
 
@@ -153,6 +156,22 @@ function doShare(fileName) {
   }
   document.getElementById(fileName).style.display = "block";
   event.currentTarget.className += " w3-light-grey";
+}
+
+function addFileInput(files) {
+	var x = document.getElementById("fileList");
+	x.innerHTML = "";
+	
+	for (var i = 0; i < files.length; i++) {
+		selectedFileSet[files[i].name] = files[i];
+	}
+	
+	for (key in selectedFileSet) {
+		var file = document.createElement("div");
+		file.appendChild(document.createTextNode(key));
+		file.className="w3-container";
+		x.appendChild(file);
+	}
 }
 </script>
 
