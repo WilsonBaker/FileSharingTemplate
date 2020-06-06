@@ -65,7 +65,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 		</div>
 	    <div id="fileList">
 		</div>
-        <input class="w3-input" type="file" multiple onchange="addFileInput(this.files)">
+        <input class="w3-input" type="file" multiple onchange="addFileInput(this.files)" onclick="this.value=null">
 	  </div>
       <label>Share with</label>
       <select class="w3-select w3-border w3-margin-bottom" onchange="selectSharing(this)">
@@ -192,6 +192,16 @@ function addFileInput(files) {
 		outName.appendChild(document.createTextNode(selectedFileSet[key].name));
 		rename.appendChild(document.createTextNode("Rename"));
 		remove.appendChild(document.createTextNode("Remove"));
+		
+		rename.addEventListener("click", function() {
+			console.log("Rename " + key);
+		});
+		
+		remove.addEventListener("click", function() {
+			delete selectedFileSet[key];
+			addFileInput([]);
+		});
+		
 		inName.className="selFileName";
 		outName.className="selFileName";
 		rename.className="w3-button selFileButton";
@@ -203,6 +213,8 @@ function addFileInput(files) {
 		file.className="w3-container selFile";
 		x.appendChild(file);
 	}
+	
+	x.value = null;
 }
 
 function selectSharing(list) {
