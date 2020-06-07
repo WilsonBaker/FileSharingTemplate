@@ -8,6 +8,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><style>
 html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 .w3-bar-block .w3-bar-item {padding: 16px}
+.selFile {display:flex}
+.selFileName {flex:1 1 0%}
+.selFileButton {flex:0 0 auto}
+.heading {font-weight:bolder}
+.invisible {visibility:hidden}
 </style>
 <body>
 
@@ -28,21 +33,35 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 <div id="id01" class="w3-modal" style="z-index:4">
   <div class="w3-modal-content w3-animate-zoom">
     <div class="w3-container w3-padding w3-red">
-       <span onclick="document.getElementById('id01').style.display='none'"
+       <span onclick="cancelSharing()"
        class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
       <h2>Share File</h2>
     </div>
     <div class="w3-panel">
-      <label>To</label>
-      <input class="w3-input w3-border w3-margin-bottom" type="text">
-      <label>From</label>
-      <input class="w3-input w3-border w3-margin-bottom" type="text">
-      <label>File</label>
-      <input class="w3-input w3-border w3-margin-bottom" type="text">
-      <input class="w3-input w3-border w3-margin-bottom" style="height:150px" placeholder="Message">
+      <label>Files</label>
+	  <div class="w3-section w3-border">
+		<div class="w3-container selFile">
+		  <span class="selFileName heading">Filename</span><span class="selFileName heading">Shared name</span><span class="w3-button selFileButton invisible w3-light-grey" id="renameWidth">Rename</span><span class="w3-button selFileButton invisible">Remove</span>
+		</div>
+	    <div id="fileList">
+		</div>
+        <input class="w3-input" type="file" multiple onchange="addFileInput(this.files)" onclick="this.value=null" id="filePicker">
+	  </div>
+      <label>Share with</label>
+      <input class="w3-input w3-border w3-margin-bottom w3-red" type="button" value="None" data-group="" id="defaultGroup" onclick="selectLoc(this)">
+	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="Group - 350" data-group="350" onclick="selectLoc(this)">
+	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="Group - 303" data-group="303" onclick="selectLoc(this)">
+	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="Group - Other" data-group="Other" onclick="selectOther(this)">
+	  <select class="w3-select w3-border w3-margin-bottom" onchange="selectSharing(this)" id="groupSharing" style="display:none;">
+		<option>350</option>
+		<option>303</option>
+		<option>Per Son</option>
+      </select>
+      <label>Custom message</label>
+      <input class="w3-input w3-border w3-margin-bottom" style="height:150px" id="shareMessage" placeholder="Message">
       <div class="w3-section">
-        <a class="w3-button w3-red" onclick="document.getElementById('id01').style.display='none'">Cancel  <i class="fa fa-remove"></i></a>
-        <a class="w3-button w3-light-grey w3-right" onclick="document.getElementById('id01').style.display='none'">Share  <i class="fa fa-paper-plane"></i></a>
+        <a class="w3-button w3-red" onclick="cancelSharing()">Cancel  <i class="fa fa-remove"></i></a>
+        <a class="w3-button w3-light-grey w3-right" onclick="doSharing(selectedFileSet, selectedGroup, document.getElementById('shareMessage').value)">Share  <i class="fa fa-paper-plane"></i></a>
       </div>
     </div>
   </div>
@@ -134,6 +153,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 </div>
 
 <script>
+selectedFileSet = {};
+lastSelLoc = document.getElementById("defaultGroup");
+selectedGroup = "";
 
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
@@ -143,6 +165,113 @@ function w3_open() {
 function w3_close() {
   document.getElementById("mySidebar").style.display = "none";
   document.getElementById("myOverlay").style.display = "none";
+}
+
+function addFileInput(files) {
+	var x = document.getElementById("fileList");
+	x.innerHTML = "";
+	
+	for (var i = 0; i < files.length; i++) {
+		selectedFileSet[files[i].name] = {file:files[i],name:files[i].name};
+	}
+	
+	for (key in selectedFileSet) {
+		var file = document.createElement("div");
+		var inName = document.createElement("span");
+		var outName = document.createElement("span");
+		var editName = document.createElement("input");
+		var rename = document.createElement("a");
+		var remove = document.createElement("a");
+		
+		editName.type = "text";
+		editName.style.display = "none";
+		inName.appendChild(document.createTextNode(key));
+		outName.appendChild(document.createTextNode(selectedFileSet[key].name));
+		outName.appendChild(editName);
+		rename.appendChild(document.createTextNode("Rename"));
+		remove.appendChild(document.createTextNode("Remove"));
+		
+		rename.addEventListener("click", function() {
+			if (rename.innerText == "Rename") {
+				editName.value = outName.innerText;
+				rename.innerText = "Accept";
+				editName.style.display = "inline";
+			} else {
+				rename.innerText = "Rename";
+				selectedFileSet[key].name = editName.value;
+				outName.innerText = editName.value;
+				editName.style.display = "none";
+				outName.appendChild(editName); //Apparently the last line got rid of the element so need to add it back somehow
+			}
+		});
+		
+		remove.addEventListener("click", function() {
+			delete selectedFileSet[key];
+			addFileInput([]);
+		});
+		
+		inName.className="selFileName";
+		outName.className="selFileName w3-light-grey";
+		editName.className="w3-input w3-border w3-margin-bottom";
+		rename.className="w3-button selFileButton w3-light-grey";
+		remove.className="w3-button selFileButton";
+		file.appendChild(inName);
+		file.appendChild(outName);
+		file.appendChild(rename);
+		file.appendChild(remove);
+		file.className="w3-container selFile";
+		x.appendChild(file);
+		rename.style["flex"]="0 0 "+document.getElementById("renameWidth").clientWidth+"px";
+	}
+	
+	x.value = null;
+}
+
+function selectSharing(list) {
+	selectedGroup = list.options[list.selectedIndex].label;
+}
+
+function selectLoc(loc) {
+  if (lastSelLoc !== undefined) {
+    lastSelLoc.className = lastSelLoc.className.replace(" w3-red","");
+  }
+  
+  document.getElementById("groupSharing").style.display = "none";
+  loc.className += " w3-red";
+  selectedGroup = loc.dataset.group;
+  lastSelLoc = loc;
+}
+
+function selectOther(loc) {
+  if (lastSelLoc !== undefined) {
+    lastSelLoc.className = lastSelLoc.className.replace(" w3-red","");
+  }
+  
+  list = document.getElementById("groupSharing");
+  list.style.display = "block";
+  loc.className += " w3-red";
+  selectSharing(list);
+  lastSelLoc = loc;
+}
+
+function cancelSharing() {
+  selectedFileSet = {};
+  addFileInput([]);
+  selectLoc(document.getElementById("defaultGroup"));
+  document.getElementById("groupSharing").selectedIndex = 0;
+  document.getElementById("shareMessage").value = null;
+  document.getElementById("filePicker").value = null;
+  document.getElementById('id01').style.display='none';
+}
+
+function doSharing(files, group, message) {
+  console.log("sharing with \"" + group + "\" with message \"" + message + "\":");
+  
+  for (key in selectedFileSet) {
+    console.log("\tfile: \"" + key + "\" with name \"" + selectedFileSet[key].name + "\"");
+  }
+  
+  cancelSharing(); //Reset the popup back to how it was
 }
 
 </script>
