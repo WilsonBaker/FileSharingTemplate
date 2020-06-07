@@ -68,9 +68,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
         <input class="w3-input" type="file" multiple onchange="addFileInput(this.files)" onclick="this.value=null" id="filePicker">
 	  </div>
       <label>Share with</label>
-      <input class="w3-input w3-border w3-margin-bottom w3-red" type="button" value="350" id="defaultGroup" onclick="selectLoc(this)">
-	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="303" onclick="selectLoc(this)">
-	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="Other" onclick="selectOther(this)">
+      <input class="w3-input w3-border w3-margin-bottom w3-red" type="button" value="None" data-group="" id="defaultGroup" onclick="selectLoc(this)">
+	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="Group - 350" data-group="350" onclick="selectLoc(this)">
+	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="Group - 303" data-group="303" onclick="selectLoc(this)">
+	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="Group - Other" data-group="Other" onclick="selectOther(this)">
 	  <select class="w3-select w3-border w3-margin-bottom" onchange="selectSharing(this)" id="groupSharing" style="display:none;">
 		<option>350</option>
 		<option>303</option>
@@ -134,8 +135,8 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 
 <script>
 selectedFileSet = {};
-lastSelLoc = undefined;
-selectedGroup = "350";
+lastSelLoc = document.getElementById("defaultGroup");
+selectedGroup = "";
 
 var openInbox = document.getElementById("myBtn");
 openInbox.click();
@@ -248,7 +249,7 @@ function selectLoc(loc) {
   
   document.getElementById("groupSharing").style.display = "none";
   loc.className += " w3-red";
-  selectedGroup = loc.value;
+  selectedGroup = loc.dataset.group;
   lastSelLoc = loc;
 }
 
@@ -283,8 +284,6 @@ function doSharing(files, group, message) {
   
   cancelSharing(); //Reset the popup back to how it was
 }
-
-selectLoc(document.getElementById("defaultGroup"));
 </script>
 
 <script>
