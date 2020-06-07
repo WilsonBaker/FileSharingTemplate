@@ -68,25 +68,19 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
         <input class="w3-input" type="file" multiple onchange="addFileInput(this.files)" onclick="this.value=null" id="filePicker">
 	  </div>
       <label>Share with</label>
-      <select class="w3-select w3-border w3-margin-bottom" onchange="selectSharing(this)" id="groupSharing">
+      <input class="w3-input w3-border w3-margin-bottom w3-red" type="button" value="350" id="defaultGroup" onclick="selectLoc(this)">
+	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="303" onclick="selectLoc(this)">
+	  <input class="w3-input w3-border w3-margin-bottom" type="button" value="Other" onclick="selectOther(this)">
+	  <select class="w3-select w3-border w3-margin-bottom" onchange="selectSharing(this)" id="groupSharing" style="display:none;">
 		<option>350</option>
 		<option>303</option>
 		<option>Per Son</option>
-		<option>Other</option>
-	  </select>
-      <input class="w3-input w3-border w3-margin-bottom" type="text" id="otherSharing" style="display:none;">
-	  <label>Location</label>
-      <input class="w3-input w3-border w3-margin-bottom" type="text" id="fileLoc" onchange="selectLoc(undefined)">
-	  <input class="w3-input w3-border w3-margin-bottom" type="button" id="recentLocToggle" value="Show Recent Locations" onclick="toggleLocs()">
-      <div id="recentLoc" class="w3-container" style="display:none;">
-	    <input class="w3-input w3-border w3-margin-bottom" type="button" value="350 stuff/assign3" onclick="selectLoc(this)">
-	    <input class="w3-input w3-border w3-margin-bottom" type="button" value="303 stuff/tgip" onclick="selectLoc(this)">
-	  </div>
-	  <label>Custom message</label>
+      </select>
+      <label>Custom message</label>
       <input class="w3-input w3-border w3-margin-bottom" style="height:150px" id="shareMessage" placeholder="Message">
       <div class="w3-section">
         <a class="w3-button w3-red" onclick="cancelSharing()">Cancel  <i class="fa fa-remove"></i></a>
-        <a class="w3-button w3-light-grey w3-right" onclick="doSharing(selectedFileSet, getGroup(document.getElementById('groupSharing')), document.getElementById('fileLoc').value, document.getElementById('shareMessage').value)">Share  <i class="fa fa-paper-plane"></i></a>
+        <a class="w3-button w3-light-grey w3-right" onclick="doSharing(selectedFileSet, selectedGroup, document.getElementById('shareMessage').value)">Share  <i class="fa fa-paper-plane"></i></a>
       </div>
     </div>
   </div>
@@ -141,6 +135,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 <script>
 selectedFileSet = {};
 lastSelLoc = undefined;
+selectedGroup = "350";
 
 var openInbox = document.getElementById("myBtn");
 openInbox.click();
@@ -243,11 +238,7 @@ function addFileInput(files) {
 }
 
 function selectSharing(list) {
-	if (list.selectedIndex == list.options.length - 1) {
-		document.getElementById("otherSharing").style.display = "block";
-	} else {
-		document.getElementById("otherSharing").style.display = "none";
-	}
+	selectedGroup = list.options[list.selectedIndex].label;
 }
 
 function selectLoc(loc) {
@@ -255,50 +246,36 @@ function selectLoc(loc) {
     lastSelLoc.className = lastSelLoc.className.replace(" w3-red","");
   }
   
-  if (loc !== undefined) {
-    loc.className += " w3-red";
-    document.getElementById("fileLoc").value = loc.value;
-  }
-  
+  document.getElementById("groupSharing").style.display = "none";
+  loc.className += " w3-red";
+  selectedGroup = loc.value;
   lastSelLoc = loc;
 }
 
-function toggleLocs() {
-  if (document.getElementById("recentLoc").style.display == "block") {
-    document.getElementById("recentLoc").style.display = "none";
-	document.getElementById("recentLocToggle").value = "Show Recent Locations";
-  } else {
-    document.getElementById("recentLoc").style.display = "block";
-    document.getElementById("recentLocToggle").value = "Hide Recent Locations";
+function selectOther(loc) {
+  if (lastSelLoc !== undefined) {
+    lastSelLoc.className = lastSelLoc.className.replace(" w3-red","");
   }
+  
+  list = document.getElementById("groupSharing");
+  list.style.display = "block";
+  loc.className += " w3-red";
+  selectSharing(list);
+  lastSelLoc = loc;
 }
 
 function cancelSharing() {
   selectedFileSet = {};
   addFileInput([]);
-  selectLoc(undefined);
+  selectLoc(document.getElementById("defaultGroup"));
   document.getElementById("groupSharing").selectedIndex = 0;
-  document.getElementById("fileLoc").value = null;
   document.getElementById("shareMessage").value = null;
   document.getElementById("filePicker").value = null;
   document.getElementById('id01').style.display='none';
-  
-  if (document.getElementById("recentLoc").style.display == "block") {
-    document.getElementById("recentLoc").style.display = "none";
-	document.getElementById("recentLocToggle").value = "Show Recent Locations";
-  }
 }
 
-function getGroup(list) {
-  if (list.selectedIndex == list.options.length - 1) {
-    return document.getElementById("otherSharing").value;
-  } else {
-    return list.options[list.selectedIndex].label;
-  }
-}
-
-function doSharing(files, group, location, message) {
-  console.log("sharing with \"" + group + "\" at \"" + location + "\" with message \"" + message + "\":");
+function doSharing(files, group, message) {
+  console.log("sharing with \"" + group + "\" with message \"" + message + "\":");
   
   for (key in selectedFileSet) {
     console.log("\tfile: \"" + key + "\" with name \"" + selectedFileSet[key].name + "\"");
@@ -306,6 +283,8 @@ function doSharing(files, group, location, message) {
   
   cancelSharing(); //Reset the popup back to how it was
 }
+
+selectLoc(document.getElementById("defaultGroup"));
 </script>
 
 <script>
