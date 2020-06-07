@@ -17,29 +17,8 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
   <a href="javascript:void(0)" onclick="w3_close()" title="Close Sidemenu"
   class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a>
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align" onclick="document.getElementById('id01').style.display='block'"><i class="w3-padding fa fa-plus"></i>Add Files</a>
-  <a id="groupsBtn" onclick="mainPage('Groups')" onclick="tabHighlight('groupsBtn')" href="javascript:void(0)" class="w3-bar-item w3-button w3-blue"><i class="fa fa-users w3-margin-right"></i>Groups</a>
-  <a id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-folder w3-margin-right"></i>My Files</a>
-  <div id="Demo1" class="w3-hide w3-animate-left">
-    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="doShare('File1');w3_close();" id="firstTab">
-      <div class="w3-container">
-        <img class="w3-round w3-margin-right" src="./fileIcon3.png" style="width:15%;"><span class="w3-opacity w3-large">File 1</span>
-        <h6>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</h6>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-      </div>
-    </a>
-     <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="doShare('File2');w3_close();">
-      <div class="w3-container">
-        <img class="w3-round w3-margin-right" src="./fileIcon5.png" style="width:15%;"><span class="w3-opacity w3-large">File 2</span>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-      </div>
-    </a>
-    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="doShare('File3');w3_close();">
-      <div class="w3-container">
-        <img class="w3-round w3-margin-right" src="./fileIcon2.png" style="width:15%;"><span class="w3-opacity w3-large">File 3</span>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-      </div>
-    </a>
-  </div>
+  <a id="groupsBtn" href="./Assignment3_base.html" class="w3-bar-item w3-button w3-blue"><i class="fa fa-users w3-margin-right"></i>Groups</a>
+  <a id="myBtn" href="./Assignment3_files.html" class="w3-bar-item w3-button"><i class="fa fa-folder w3-margin-right"></i>My Files</a>
   <a href="#" class="w3-bar-item w3-button"><i class="fa fa-clock-o w3-margin-right"></i>Recent</a>
   <a href="#" class="w3-bar-item w3-button"><i class="fa fa-archive w3-margin-right"></i>Shared With Me</a>
   <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Trash</a>
@@ -118,28 +97,33 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
       <div class="w3-black w3-center" style="width: 100%;">
         <h1>Friends</h1>
       </div>
-      <div class="w3-margin-left" style="margin-top: 20px; margin-bottom: 30px; width: 100%;">
-        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding " style="border-radius: 25px;"><i class="fa fa-user w3-margin-right"></i>Wilson Baker</a>
+
+      <div>
+        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding w3-margin-top w3-button w3-left-align" style="border-radius: 25px; width: 100%;"><i class="fa fa-user w3-margin-right"></i>Wilson Baker</a>
       </div>
 
-      <div class="w3-margin-top w3-margin-left" style="margin-top: 20px; margin-bottom: 30px; width: 100%;">
-        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding" style="border-radius: 25px;"><i class="fa fa-user w3-margin-right"></i>Aaron Kleine</a>
+      <div>
+        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding w3-margin-top w3-button w3-left-align" style="border-radius: 25px; width: 100%;"><i class="fa fa-user w3-margin-right"></i>John Smith</a>
       </div>
 
-      <div class="w3-margin-top w3-margin-left" style="margin-top: 20px; margin-bottom: 30px;">
-        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding" style="border-radius: 25px;"><i class="fa fa-user w3-margin-right"></i>Stacey Cowe</a>
+      <div>
+        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding w3-margin-top w3-button w3-left-align" style="border-radius: 25px; width: 100%;"><i class="fa fa-user w3-margin-right"></i>Tudor Zagreanu</a>
       </div>
 
-      <div class="w3-margin-top w3-margin-left" style="margin-top: 20px; margin-bottom: 30px;">
-        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding" style="border-radius: 25px;"><i class="fa fa-user w3-margin-right"></i>Reginald Bob</a>
+      <div>
+        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding w3-margin-top w3-button w3-left-align" style="border-radius: 25px; width: 100%;"><i class="fa fa-user w3-margin-right"></i>Stacey Cowe</a>
       </div>
 
-      <div class="w3-margin-top w3-margin-left" style="margin-top: 20px; margin-bottom: 30px;">
-        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding" style="border-radius: 25px;"><i class="fa fa-user w3-margin-right"></i>Tudor Smiths</a>
+      <div>
+        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding w3-margin-top w3-button w3-left-align" style="border-radius: 25px; width: 100%;"><i class="fa fa-user w3-margin-right"></i>Christopher Robin</a>
       </div>
 
-      <div class="w3-margin-top w3-margin-left" style="margin-top: 20px; margin-bottom: 30px;">
-        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding" style="border-radius: 25px;"><i class="fa fa-user w3-margin-right"></i>James Ryane</a>
+      <div>
+        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding w3-margin-top w3-button w3-left-align" style="border-radius: 25px; width: 100%;"><i class="fa fa-user w3-margin-right"></i>Terry Crews</a>
+      </div>
+
+      <div>
+        <a href="javascript:void(0)" class="w3-hover-light-grey w3-large w3-border w3-padding w3-margin-top w3-button w3-left-align" style="border-radius: 25px; width: 100%;"><i class="fa fa-user w3-margin-right"></i>Angela Merkel</a>
       </div>
 
     </div>
@@ -150,8 +134,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
 </div>
 
 <script>
-var openInbox = document.getElementById("groupsBtn");
-openInbox.click();
 
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
@@ -163,10 +145,6 @@ function w3_close() {
   document.getElementById("myOverlay").style.display = "none";
 }
 
-function mainPage(tabSelected) {
-  var x = document.getElementById(tabSelected);
-  x.style.display="block";
-}
 </script>
 
 </body>
