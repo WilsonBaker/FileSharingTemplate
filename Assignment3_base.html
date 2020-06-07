@@ -29,6 +29,20 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
   <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Trash</a>
 </nav>
 
+<div id="id02" class="w3-modal" style="z-index:4">
+  <div class="w3-modal-content w3-animate-zoom">
+    <div class="w3-container w3-padding w3-red">
+      <span onclick="cancelSharing()"
+       class="w3-button w3-red w3-right w3-xxlarge"><i class="fa fa-remove"></i></span>
+      <h2>Confirmation</h2>
+    </div>
+    <div class="w3-panel">
+      <h3>Your files have successfully been added</h3>
+    </div>
+
+  </div>
+</div>
+
 <!-- Modal that pops up when you click on "Share File" -->
 <div id="id01" class="w3-modal" style="z-index:4">
   <div class="w3-modal-content w3-animate-zoom">
@@ -61,7 +75,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
       <input class="w3-input w3-border w3-margin-bottom" style="height:150px" id="shareMessage" placeholder="Message">
       <div class="w3-section">
         <a class="w3-button w3-red" onclick="cancelSharing()">Cancel  <i class="fa fa-remove"></i></a>
-        <a class="w3-button w3-light-grey w3-right" onclick="doSharing(selectedFileSet, selectedGroup, document.getElementById('shareMessage').value)">Share  <i class="fa fa-paper-plane"></i></a>
+        <a class="w3-button w3-light-grey w3-right" onclick="doSharing(selectedFileSet, selectedGroup, document.getElementById('shareMessage').value); document.getElementById('id02').style.display='block'">Share  <i class="fa fa-paper-plane"></i></a>
       </div>
     </div>
   </div>
@@ -262,6 +276,7 @@ function cancelSharing() {
   document.getElementById("shareMessage").value = null;
   document.getElementById("filePicker").value = null;
   document.getElementById('id01').style.display='none';
+  document.getElementById('id02').style.display='none';
 }
 
 function doSharing(files, group, message) {
